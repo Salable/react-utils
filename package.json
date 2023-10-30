@@ -1,6 +1,6 @@
 {
   "name": "@salable/react-utils",
-  "version": "0.0.0-development",
+  "version": "1.0.0",
   "description": "A small set of hooks and utilities for building React apps w/ Salable.app",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
