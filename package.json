@@ -13,12 +13,14 @@
     "semantic-release": "semantic-release",
     "prepare": "husky install"
   },
-  "author": "",
+  "author": "Salable",
   "license": "MIT",
   "repository": {
     "url": "https://github.com/Salable/react-utils"
   },
   "devDependencies": {
+    "@commitlint/cli": "^18.2.0",
+    "@commitlint/config-conventional": "^18.1.0",
     "@rollup/plugin-typescript": "^11.1.5",
     "@semantic-release/changelog": "^6.0.3",
     "@semantic-release/git": "^10.0.1",
@@ -45,5 +47,8 @@
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx,css,md}": "prettier --write"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
