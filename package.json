@@ -1,0 +1,24 @@
+{
+  "name": "@salable/react-utils",
+  "version": "0.0.0-development",
+  "description": "A small set of hooks and utilities for building React apps w/ Salable.app",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "semantic-release": "semantic-release"
+  },
+  "author": "",
+  "license": "MIT",
+  "repository": {
+    "url": "https://github.com/Salable/react-utils"
+  },
+  "devDependencies": {
+    "@semantic-release/changelog": "^6.0.3",
+    "@semantic-release/git": "^10.0.1",
+    "semantic-release": "^22.0.5"
+  }
+}
