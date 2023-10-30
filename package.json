@@ -11,6 +11,7 @@
     "build": "rollup -c",
     "test": "jest",
     "semantic-release": "semantic-release",
+    "preversion": "npm run build",
     "prepare": "husky install"
   },
   "author": "Salable",
