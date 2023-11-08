@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/Salable/react-utils/compare/v1.0.1...v1.1.0) (2023-11-08)
+
+
+### Features
+
+* Add useProduct and useUser hooks ([bbe92d7](https://github.com/Salable/react-utils/commit/bbe92d795952ef45401d28768d335ee4f9d7e278))
+
 ## [1.0.1](https://github.com/Salable/react-utils/compare/v1.0.0...v1.0.1) (2023-10-30)
 
 
