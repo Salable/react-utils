@@ -1,7 +1,8 @@
 import { useContext, createContext } from 'react';
 
-type SalableContextData = {
+export type SalableContextData = {
   apiKey: string;
+  productUuid: string;
   granteeId?: string;
 };
 
@@ -12,7 +13,7 @@ function useSalableContext(): SalableContextData {
 
   if (typeof context === 'undefined') {
     throw new Error(
-      'useSalableContext requires a parent SalableContextProvider to be rendered.',
+      'Salable React Hooks require a parent SalableContextProvider to be rendered.',
     );
   }
 

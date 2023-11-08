@@ -9,7 +9,9 @@ describe('Context', () => {
   describe('SalableContextProvider', () => {
     it('correctly renders provided children', () => {
       const { getByText } = render(
-        <SalableContextProvider value={{ apiKey: 'fake-api-key' }}>
+        <SalableContextProvider
+          value={{ apiKey: 'fake-api-key', productUuid: '1' }}
+        >
           <h1>Provided Children</h1>
         </SalableContextProvider>,
       );
@@ -30,7 +32,7 @@ describe('Context', () => {
         renderHook(() => useSalableContext(), {});
       } catch (e) {
         expect((e as Error).message).toEqual(
-          'useSalableContext requires a parent SalableContextProvider to be rendered.',
+          'Salable React Hooks require a parent SalableContextProvider to be rendered.',
         );
       }
     });
@@ -39,7 +41,11 @@ describe('Context', () => {
       const { result } = renderHook(() => useSalableContext(), {
         wrapper: ({ children }) => (
           <SalableContextProvider
-            value={{ apiKey: 'fake-api-key', granteeId: 'fake-grantee-id' }}
+            value={{
+              apiKey: 'fake-api-key',
+              granteeId: 'fake-grantee-id',
+              productUuid: '1',
+            }}
           >
             {children}
           </SalableContextProvider>
@@ -49,6 +55,7 @@ describe('Context', () => {
       expect(result.current).toMatchObject({
         apiKey: 'fake-api-key',
         granteeId: 'fake-grantee-id',
+        productUuid: '1',
       });
     });
   });

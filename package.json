@@ -10,6 +10,7 @@
   "scripts": {
     "build": "rollup -c",
     "test": "jest",
+    "generate-api-types": "npx openapi-typescript https://d2jzis2pwe9wri.cloudfront.net/openapi.v1.yaml -o ./src/types/api.d.ts",
     "semantic-release": "semantic-release",
     "preversion": "npm run build",
     "prepare": "husky install"
@@ -32,7 +33,9 @@
     "husky": "^8.0.3",
     "jest": "^29.7.0",
     "jest-environment-jsdom": "^29.7.0",
+    "jest-fetch-mock": "^3.0.3",
     "lint-staged": "^15.0.2",
+    "openapi-typescript": "^6.7.0",
     "prettier": "3.0.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -51,5 +54,8 @@
   },
   "publishConfig": {
     "access": "public"
+  },
+  "dependencies": {
+    "swr": "^2.2.4"
   }
 }
