@@ -54,6 +54,11 @@ type ProductData = {
 const fetcher: Fetcher<any, string> = (...args) =>
   fetch(...args).then((res) => res.json());
 
+/**
+ * Returns useful information about the product specified in the
+ * `SalableContext`. If you also want deprecated resources to be returned, you
+ * can pass in an optional options object with `{ withDeprecated: true}`.
+ */
 const useProduct = (options?: {
   withDeprecated: boolean;
 }): ProductData | null => {

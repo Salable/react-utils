@@ -27,12 +27,6 @@ type UserLicense = {
     | 'INACTIVE';
 };
 
-/**
- * Should we have two separate functions rather than just `hasCapability`.
- *
- * The alternative solution is `hasCapability: (capabilityName: string) => bool
- * and `checkCapabilities(capabilities: string[]): Record<string, boolean>`
- */
 type UserData = {
   isTest: boolean;
   licenses: UserLicense[];
@@ -66,6 +60,13 @@ type UserData = {
 const fetcher: Fetcher<Schemas['License'][], string> = (...args) =>
   fetch(...args).then((res) => res.json());
 
+/**
+ * Returns information scoped to the current product AND user - both are
+ * determined by reading values from the `SalableContext`.
+ *
+ * If a `granteeId` isn't specified in the context, then calling this hook will
+ * return `null`.
+ */
 export function useUser(): UserData | null {
   const { granteeId } = useSalableContext();
   if (!granteeId) return null;
