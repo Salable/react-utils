@@ -1,3 +1,15 @@
+# [2.0.0](https://github.com/Salable/react-utils/compare/v1.1.0...v2.0.0) (2023-11-09)
+
+
+### Code Refactoring
+
+* change useProduct to take an options obj ([8d7a19e](https://github.com/Salable/react-utils/commit/8d7a19e8c9c1e97f03b3641bacdbb938e1efbab5))
+
+
+### BREAKING CHANGES
+
+* rather than a single boolean being passed in, an object containing a `withDeprecated` key is now required.
+
 # [1.1.0](https://github.com/Salable/react-utils/compare/v1.0.1...v1.1.0) (2023-11-08)
 
 
