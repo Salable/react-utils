@@ -204,4 +204,41 @@ describe('useProduct', () => {
       ],
     });
   });
+
+  it('excludes deprecated resources by default', async () => {
+    const { result } = renderHook(() => useProduct({ withDeprecated: true }), {
+      wrapper: createWrapper(),
+    });
+    await waitFor(() => expect(result.current).not.toBeNull());
+
+    expect(result.current).not.toMatchObject({
+      plans: [
+        {
+          features: [{ name: 'deprecated test' }],
+        },
+      ],
+    });
+  });
+
+  it('includes deprecated resources if requested', async () => {
+    const { result } = renderHook(() => useProduct({ withDeprecated: true }), {
+      wrapper: createWrapper(),
+    });
+    await waitFor(() => expect(result.current).not.toBeNull());
+
+    expect(result.current).toMatchObject({
+      plans: [
+        {
+          features: [
+            {
+              name: 'test',
+            },
+            {
+              name: 'deprecated test',
+            },
+          ],
+        },
+      ],
+    });
+  });
 });

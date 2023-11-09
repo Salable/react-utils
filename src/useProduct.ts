@@ -54,7 +54,9 @@ type ProductData = {
 const fetcher: Fetcher<any, string> = (...args) =>
   fetch(...args).then((res) => res.json());
 
-const useProduct = (withDeprecated = false): ProductData | null => {
+const useProduct = (options?: {
+  withDeprecated: boolean;
+}): ProductData | null => {
   const { productUuid } = useSalableContext();
   const { data, isLoading } = useSWR(
     `https://api.salable.app/products/${productUuid}/pricingtable?globalSuccessUrl='https://example.com/'&globalCancelUrl='https://example.com/'&globalGranteeId=''&member=''`,
@@ -64,7 +66,7 @@ const useProduct = (withDeprecated = false): ProductData | null => {
   if (isLoading || typeof data === 'undefined') return null;
 
   const isDeprecated = (item: any) =>
-    withDeprecated || item.status === 'ACTIVE';
+    options?.withDeprecated || item.status === 'ACTIVE';
 
   const transformedData: ProductData = {
     name: data.name,

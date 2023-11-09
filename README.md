@@ -90,6 +90,10 @@ function ActionButtons() {
 Returns useful data about the current product. Can be used for many things
 including the creation of custom pricing tables.
 
+By default, plans and features that are marked as `DEPRECATED` will be excluded
+from the response. If you would like these returned, you can pass in an optional
+options object with `{ withDeprecated: true }`.
+
 ### Example
 
 ```tsx
