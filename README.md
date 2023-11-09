@@ -101,6 +101,6 @@ import { useProduct } from '@salable/react-utils';
 
 function MyComponent() {
   const { name } = useProduct();
-  return <h1>This product is called {product.name}</h1>;
+  return <h1>This product is called {name}</h1>;
 }
 ```
