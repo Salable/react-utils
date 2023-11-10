@@ -50,9 +50,12 @@ type ProductData = {
   plans: ProductPlan[];
 };
 
-// @TODO: Once the OpenAPI spec is fixed, we can update this type.
-const fetcher: Fetcher<any, string> = (...args) =>
-  fetch(...args).then((res) => res.json());
+const fetcher = ([url, apiKey]: [string, string]) =>
+  fetch(url, {
+    headers: {
+      'x-api-key': apiKey,
+    },
+  }).then((res) => res.json());
 
 /**
  * Returns useful information about the product specified in the
@@ -62,9 +65,12 @@ const fetcher: Fetcher<any, string> = (...args) =>
 const useProduct = (options?: {
   withDeprecated: boolean;
 }): ProductData | null => {
-  const { productUuid } = useSalableContext();
+  const { productUuid, apiKey } = useSalableContext();
   const { data, isLoading } = useSWR(
-    `https://api.salable.app/products/${productUuid}/pricingtable?globalSuccessUrl='https://example.com/'&globalCancelUrl='https://example.com/'&globalGranteeId=''&member=''`,
+    [
+      `https://api.salable.app/products/${productUuid}/pricingtable?globalSuccessUrl='https://example.com/'&globalCancelUrl='https://example.com/'&globalGranteeId=''&member=''`,
+      apiKey,
+    ],
     fetcher,
   );
 

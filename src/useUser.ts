@@ -57,8 +57,14 @@ type UserData = {
   hasCapability: HasCapability;
 };
 
-const fetcher: Fetcher<Schemas['License'][], string> = (...args) =>
-  fetch(...args).then((res) => res.json());
+const fetcher = ([url, apiKey]: [string, string]): Promise<
+  Schemas['License'][]
+> =>
+  fetch(url, {
+    headers: {
+      'x-api-key': apiKey,
+    },
+  }).then((res) => res.json());
 
 /**
  * Returns information scoped to the current product AND user - both are
@@ -68,11 +74,11 @@ const fetcher: Fetcher<Schemas['License'][], string> = (...args) =>
  * return `null`.
  */
 export function useUser(): UserData | null {
-  const { granteeId } = useSalableContext();
+  const { granteeId, apiKey } = useSalableContext();
   if (!granteeId) return null;
 
   const { data, isLoading } = useSWR(
-    `https://api.salable.app/licenses/granteeId/${granteeId}`,
+    [`https://api.salable.app/licenses/granteeId/${granteeId}`, apiKey],
     fetcher,
   );
 
