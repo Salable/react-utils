@@ -1,3 +1,10 @@
+## [2.0.2](https://github.com/Salable/react-utils/compare/v2.0.1...v2.0.2) (2023-11-10)
+
+
+### Bug Fixes
+
+* pass apiKey into all SWR fetcher functions ([5ab6144](https://github.com/Salable/react-utils/commit/5ab614406f9881273bc9a87c281ab276eb971a7e))
+
 ## [2.0.1](https://github.com/Salable/react-utils/compare/v2.0.0...v2.0.1) (2023-11-10)
 
 
