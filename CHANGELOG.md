@@ -1,3 +1,15 @@
+# [3.0.0](https://github.com/Salable/react-utils/compare/v2.0.2...v3.0.0) (2023-11-13)
+
+
+### Code Refactoring
+
+* make useProduct a named export ([5c116e8](https://github.com/Salable/react-utils/commit/5c116e83a58e1c9ea46cd4b3239701b58aafb43e))
+
+
+### BREAKING CHANGES
+
+* useProduct was previously a default export but is now only a named export
+
 ## [2.0.2](https://github.com/Salable/react-utils/compare/v2.0.1...v2.0.2) (2023-11-10)
 
 
