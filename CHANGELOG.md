@@ -1,3 +1,18 @@
+# [4.0.0](https://github.com/Salable/react-utils/compare/v3.0.0...v4.0.0) (2023-11-13)
+
+
+### Features
+
+* add 'state' value to useUser return ([0db3eab](https://github.com/Salable/react-utils/commit/0db3eab8061ec061a72798bbd23ee2dd3adb0edd))
+* allow updating of granteeId via context hook ([0ac4e56](https://github.com/Salable/react-utils/commit/0ac4e565ee485fcef4700f6a32d9768d3d9a5820))
+
+
+### BREAKING CHANGES
+
+* user no longer returns null, instead it returns a 'state' value of 'success' | 'loading' | 'error'.
+
+This will massively simplify usage of the hook, especially when it comes to handling both loading states and errors.
+
 # [3.0.0](https://github.com/Salable/react-utils/compare/v2.0.2...v3.0.0) (2023-11-13)
 
 
