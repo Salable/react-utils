@@ -1,5 +1,23 @@
-import { render, renderHook } from '@testing-library/react';
-import { SalableContextProvider, useSalableContext } from '../Context';
+import { act, render, renderHook } from '@testing-library/react';
+import {
+  SalableContextData,
+  SalableContextProvider,
+  useSalableContext,
+} from '../Context';
+
+type WrapperProps = {
+  children: React.ReactNode;
+};
+
+const createWrapper =
+  (contextOverrides?: Partial<SalableContextData>) =>
+  ({ children }: WrapperProps) => (
+    <SalableContextProvider
+      value={{ apiKey: '1', productUuid: '2', ...contextOverrides }}
+    >
+      {children}
+    </SalableContextProvider>
+  );
 
 describe('Context', () => {
   afterEach(() => {
@@ -39,24 +57,24 @@ describe('Context', () => {
 
     it('returns correct context data', () => {
       const { result } = renderHook(() => useSalableContext(), {
-        wrapper: ({ children }) => (
-          <SalableContextProvider
-            value={{
-              apiKey: 'fake-api-key',
-              granteeId: 'fake-grantee-id',
-              productUuid: '1',
-            }}
-          >
-            {children}
-          </SalableContextProvider>
-        ),
+        wrapper: createWrapper({ granteeId: 'fake-grantee-id' }),
       });
 
       expect(result.current).toMatchObject({
-        apiKey: 'fake-api-key',
+        apiKey: '1',
         granteeId: 'fake-grantee-id',
-        productUuid: '1',
+        productUuid: '2',
       });
+    });
+
+    it('allows the user to update the granteeId', () => {
+      const { result } = renderHook(() => useSalableContext(), {
+        wrapper: createWrapper({ granteeId: 'fake-grantee-id' }),
+      });
+
+      act(() => result.current.setGranteeId('a-new-fake-grantee-id'));
+
+      expect(result.current.granteeId).toEqual('a-new-fake-grantee-id');
     });
   });
 });
