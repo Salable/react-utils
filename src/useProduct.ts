@@ -1,6 +1,5 @@
 import useSWR, { type Fetcher } from 'swr';
 import { useSalableContext } from './Context';
-import { type Schemas } from './types';
 
 type ProductFeature = {
   name: string;
@@ -62,7 +61,7 @@ const fetcher = ([url, apiKey]: [string, string]) =>
  * `SalableContext`. If you also want deprecated resources to be returned, you
  * can pass in an optional options object with `{ withDeprecated: true}`.
  */
-const useProduct = (options?: {
+export const useProduct = (options?: {
   withDeprecated: boolean;
 }): ProductData | null => {
   const { productUuid, apiKey } = useSalableContext();
@@ -117,5 +116,3 @@ const useProduct = (options?: {
 
   return transformedData;
 };
-
-export default useProduct;
