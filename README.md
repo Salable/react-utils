@@ -52,6 +52,25 @@ function MyComponent() {
 }
 ```
 
+You can also use `useSalableContext` to update the underlying `granteeId` value
+relied on by other hooks in this package.
+
+### Example
+
+```tsx
+import { useSalableContext } from '@salable/react-utils';
+
+function MyComponent() {
+  const contextData = useSalableContext();
+
+  function clickHandler() {
+    contextData.setGranteeId('the-new-grantee-id');
+  }
+
+  return <button onClick={clickHandler}>Change user</button>;
+}
+```
+
 ## `useUser`
 
 Returns useful data scoped both to the provided user (determined by the
@@ -66,14 +85,20 @@ provided user's capabilities.
 import { useUser } from '@salable/react-utils'
 
 function ActionButtons() {
-  const { hasCapability, capabilities, licenses } = useUser();
+  const user = useUser();
+
+  if (user.state === 'loading') return <LoadingSpinner />
+  if (user.state === 'error') {
+    // Handle errors here...
+  }
+
   /**
    * If you only want to check a single capability, pass in a string rather than
    * an array.
    *
    * hasCapability('test') => Boolean
    */
-  const { edit, delete } = hasCapability(['edit', 'delete'])
+  const { edit, delete } = user.hasCapability(['edit', 'delete'])
 
   return (
     <div>

@@ -2,7 +2,7 @@ import { renderHook, waitFor } from '@testing-library/react';
 import fetchMock from 'jest-fetch-mock';
 import { type Schemas } from '../types';
 import { SalableContextProvider, type SalableContextData } from '../Context';
-import { useUser } from '../useUser';
+import { useUser, type UserData } from '../useUser';
 
 type WrapperProps = {
   children: React.ReactNode;
@@ -99,7 +99,7 @@ describe('useUser', () => {
       wrapper: createWrapper(),
     });
 
-    expect(result.current).toBeNull();
+    expect(result.current.state).toBe('error');
   });
 
   describe('hasCapability', () => {
@@ -107,20 +107,33 @@ describe('useUser', () => {
       const { result } = renderHook(() => useUser(), {
         wrapper: createWrapper({ granteeId: '1' }),
       });
-      await waitFor(() => expect(result.current).not.toBeNull());
 
-      expect(result.current?.hasCapability('create')).toEqual(true);
-      expect(result.current?.hasCapability('delete')).toEqual(false);
+      await waitFor(() => expect(result.current.state).toBe('success'));
+
+      const userData = result.current as UserData;
+
+      expect(userData.hasCapability('create')).toEqual(true);
+      expect(userData.hasCapability('delete')).toEqual(false);
+    });
+
+    it('is case insensitive', () => {
+      const { result } = renderHook(() => useUser(), {
+        wrapper: createWrapper({ granteeId: '1' }),
+      });
+
+      const userData = result.current as UserData;
+      expect(userData.hasCapability('READ')).toEqual(true);
+      expect(userData.hasCapability('ReAd')).toEqual(true);
     });
 
     it('fails for deprecated capabilities', async () => {
       const { result } = renderHook(() => useUser(), {
         wrapper: createWrapper({ granteeId: '1' }),
       });
-      await waitFor(() => expect(result.current).not.toBeNull());
 
-      expect(result.current?.hasCapability('update')).toEqual(false);
-      expect(result.current?.hasCapability(['update'])).toMatchObject({
+      const userData = result.current as UserData;
+      expect(userData.hasCapability('update')).toEqual(false);
+      expect(userData.hasCapability(['update'])).toMatchObject({
         update: false,
       });
     });
@@ -129,14 +142,12 @@ describe('useUser', () => {
       const { result } = renderHook(() => useUser(), {
         wrapper: createWrapper({ granteeId: '1' }),
       });
-      await waitFor(() => expect(result.current).not.toBeNull());
 
-      expect(result.current?.hasCapability(['create', 'delete'])).toMatchObject(
-        {
-          create: true,
-          delete: false,
-        },
-      );
+      const userData = result.current as UserData;
+      expect(userData.hasCapability(['create', 'delete'])).toMatchObject({
+        create: true,
+        delete: false,
+      });
     });
   });
 
@@ -144,9 +155,9 @@ describe('useUser', () => {
     const { result } = renderHook(() => useUser(), {
       wrapper: createWrapper({ granteeId: '1' }),
     });
-    await waitFor(() => expect(result.current).not.toBeNull());
 
-    expect(result.current?.capabilities).toMatchObject([
+    const userData = result.current as UserData;
+    expect(userData.capabilities).toMatchObject([
       { name: 'create', status: 'ACTIVE' },
       { name: 'read', status: 'ACTIVE' },
       { name: 'update', status: 'DEPRECATED' },

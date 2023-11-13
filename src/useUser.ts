@@ -27,7 +27,8 @@ type UserLicense = {
     | 'INACTIVE';
 };
 
-type UserData = {
+export type UserData = {
+  state: 'success';
   isTest: boolean;
   licenses: UserLicense[];
   /**
@@ -38,7 +39,7 @@ type UserData = {
   capabilities: { name: string; status: Schemas['Capability']['status'] }[];
   /**
    * Used to check whether a user has either an active capability, or a list of
-   * supplied capabilities.
+   * supplied capabilities. Capability names are case insensitive.
    *
    * All inactive capabilities will return false. If you want to check against a
    * capability that isn't active, use the `capabilities` array returned by this
@@ -70,19 +71,42 @@ const fetcher = ([url, apiKey]: [string, string]): Promise<
  * Returns information scoped to the current product AND user - both are
  * determined by reading values from the `SalableContext`.
  *
- * If a `granteeId` isn't specified in the context, then calling this hook will
- * return `null`.
+ * If a `granteeId` isn't available in the SalableContext then you will get an
+ * error response which should be handled. This hook also loads external API
+ * data so you should handle the `{ state: 'loading' }` case in your code.
+ *
+ * ## Example
+ *
+ * ```tsx
+ * const user = useUser()
+ * if (!user.state === 'success') return null;
+ * const hasEditCapability = user.hasCapability('edit')
+ * ```
  */
-export function useUser(): UserData | null {
+export function useUser():
+  | { state: 'loading' }
+  | { state: 'error'; error: string }
+  | UserData {
   const { granteeId, apiKey } = useSalableContext();
-  if (!granteeId) return null;
+  if (!granteeId)
+    return {
+      state: 'error',
+      error: 'GRANTEE_ID undefined in SalableContext',
+    };
 
-  const { data, isLoading } = useSWR(
+  const { data, isLoading, error } = useSWR(
     [`https://api.salable.app/licenses/granteeId/${granteeId}`, apiKey],
     fetcher,
   );
 
-  if (isLoading || typeof data === 'undefined') return null;
+  if (isLoading) return { state: 'loading' };
+
+  if (typeof data === 'undefined') {
+    return {
+      state: 'error',
+      error,
+    };
+  }
 
   const globalCapabilities = data.flatMap(
     (license) =>
@@ -107,16 +131,18 @@ export function useUser(): UserData | null {
   ): boolean | { [Key in T]: boolean } {
     const activeCapabilities = globalCapabilities
       .filter(({ status }) => status === 'ACTIVE')
-      .map(({ name }) => name);
+      .map(({ name }) => name.toLowerCase());
 
     if (typeof capabilityOrCapabilities === 'string') {
-      return activeCapabilities.includes(capabilityOrCapabilities);
+      return activeCapabilities.includes(
+        capabilityOrCapabilities.toLowerCase(),
+      );
     }
 
     return capabilityOrCapabilities.reduce((acc, curr) => {
       return {
         ...acc,
-        [curr]: activeCapabilities.includes(curr),
+        [curr]: activeCapabilities.includes(curr.toLowerCase()),
       };
     }, {}) as { [Key in T]: boolean };
   }
@@ -136,6 +162,7 @@ export function useUser(): UserData | null {
   }));
 
   return {
+    state: 'success',
     isTest: data.some((license) => license.isTest),
     licenses,
     capabilities: globalCapabilities,
