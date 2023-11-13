@@ -1,4 +1,4 @@
-import useSWR, { type Fetcher } from 'swr';
+import useSWR from 'swr';
 import { useSalableContext } from './Context';
 
 type ProductFeature = {
