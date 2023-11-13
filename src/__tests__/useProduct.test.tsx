@@ -2,7 +2,7 @@ import { renderHook, waitFor } from '@testing-library/react';
 import fetchMock from 'jest-fetch-mock';
 import { type Schemas } from '../types';
 import { SalableContextProvider, type SalableContextData } from '../Context';
-import useProduct from '../useProduct';
+import { useProduct } from '../useProduct';
 
 type WrapperProps = {
   children: React.ReactNode;
