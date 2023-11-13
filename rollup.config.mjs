@@ -1,5 +1,7 @@
 import packageJson from './package.json' assert { type: 'json' };
 import typescript from '@rollup/plugin-typescript';
+import { nodeResolve } from '@rollup/plugin-node-resolve';
+import commonjs from '@rollup/plugin-commonjs';
 
 /** @type import('rollup') */
 export default {
@@ -9,5 +11,9 @@ export default {
     format: 'esm',
   },
   external: ['react', 'react/jsx-runtime', 'react-dom'],
-  plugins: [typescript({ exclude: ['**/__tests__/**'] })],
+  plugins: [
+    commonjs(),
+    nodeResolve(),
+    typescript({ exclude: ['**/__tests__/**'] }),
+  ],
 };
