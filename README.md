@@ -6,6 +6,10 @@ React applications with [Salable](https://salable.app/).
 Each function/hook/util in this library has detailed docblocks - hover over any
 of them in your code editor to learn more.
 
+## If you'd rather watch a video 👇
+
+[![Introducing Salable React Utils YouTube Video](https://i.ytimg.com/vi_webp/kKR6-fBVov0/maxresdefault.webp)](https://youtu.be/kKR6-fBVov0)
+
 ## SalableContextProvider
 
 In order to make use of any of the hooks in this package, you will need to
